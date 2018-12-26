@@ -11,13 +11,28 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+// Server index config // para habilitar la carpeta upload para q sea accedida desde el navegador
+// var serveIndex = require('serve-index');
+// app.use(express.static(__dirname + '/'));
+// app.use('/upload', serveIndex(__dirname + '/upload'))
+
 //rutas
 var appRoutes = require('./routes/app');
 var usuarioRoutes = require('./routes/usuario');
+var hospitalRoutes = require('./routes/hospital');
+var medicoRoutes = require('./routes/medico');
 var loginRoutes = require('./routes/login');
+var busquedaRoutes = require('./routes/busqueda');
+var uploadRoutes = require('./routes/upload');
+var imagenesRoutes = require('./routes/imagenes');
 
 app.use('/usuario', usuarioRoutes);
-app.use('/login', loginRoutes);
+app.use('/hospital', hospitalRoutes);
+app.use('/medico', medicoRoutes);
+app.use('/login', loginRoutes);   
+app.use('/busqueda', busquedaRoutes);
+app.use('/upload', uploadRoutes);
+app.use('/img', imagenesRoutes);
 app.use('/', appRoutes);
 
 //conxion BD

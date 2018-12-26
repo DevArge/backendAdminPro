@@ -5,14 +5,20 @@ var bcrypt = require('bcryptjs');
 var middAutenticacion = require('../middlewares/autenticacion')
 
 app.get('/', (req, res, next)=>{
+    let desde = Number(req.query.desde || 0);
     Usuario.find({},'nombre email img role')
+           .skip(desde)
+           .limit(5)
            .exec((err, usuarioDB)=>{
-                    if(err) return res.status(500).json({ok:false, mensaje: 'Error cargando usuario', errors: err})
+                if(err) return res.status(500).json({ok:false, mensaje: 'Error cargando usuario', errors: err})
+                Usuario.count({}, (err, conteo)=>{
                     res.status(200).json({
                         ok:true,
-                        Usuarios: usuarioDB
-                    });
-                });
+                        Usuarios: usuarioDB,
+                        total: conteo
+                    })
+                })
+            });
 });
 
 app.post('/', middAutenticacion.verificaToken, (req, res)=>{
